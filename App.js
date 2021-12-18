@@ -15,27 +15,24 @@ export default function App() {
       <View style={styles.edit}>
         <Text style={{ padding: 10, width: 100 }}>Name</Text>
         {/**/}
-        <Button title=">" color="light" />
         <br />
       </View>
       <View style={styles.edit}>
         <Text style={{ padding: 10, width: 100 }}>Phone</Text>
         {/**/}
-        <Button title=">" color="light"  />
         <br />
       </View>
       <View style={styles.edit}>
         <Text style={{ padding: 10, width: 100 }}>Email</Text>
         {/**/}
-        <Button title=">" color="light" />
         <br />
       </View>
       <View style={styles.edit}>
         <Text style={{ padding: 10, width: 100 }}>Bio</Text>
         {/**/}
-        <Button title=">" color="light" />
         <br />
       </View>
+      <Button title="Edit >" />
       <StatusBar style="auto" />
     </View>
   );
