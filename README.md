@@ -1,2 +1,2 @@
 # Approachable
- Technical project for interview
+Technical interview for Jr. Developer position
