@@ -9,7 +9,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* PROFILE IMAGE */}
-      <Image source={require("./assets/avatar.png")} style={styles.profile} />
+      <Image source={require("./Profile/assets/avatar.png")} style={styles.profile} />
       {/* INFORMATION :: each leads to a redirect to edit that section info */}
       <br />
       <View style={styles.edit}>
