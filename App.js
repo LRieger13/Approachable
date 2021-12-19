@@ -1,8 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, Image, TextInput } from "react-native";
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity, TextInput } from "react-native";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-export default function App() {
+
+export default function App({  }) {
   const [outputText, setOutputText] = useState(
     "Open up App.js to start working on your app!"
   );
@@ -10,29 +12,15 @@ export default function App() {
     <View style={styles.container}>
       {/* PROFILE IMAGE */}
       <Image source={require("./Profile/assets/avatar.png")} style={styles.profile} />
-      {/* INFORMATION :: each leads to a redirect to edit that section info */}
       <br />
-      <View style={styles.edit}>
-        <Text style={{ padding: 10, width: 100 }}>Name</Text>
-        {/**/}
-        <br />
-      </View>
-      <View style={styles.edit}>
-        <Text style={{ padding: 10, width: 100 }}>Phone</Text>
-        {/**/}
-        <br />
-      </View>
-      <View style={styles.edit}>
-        <Text style={{ padding: 10, width: 100 }}>Email</Text>
-        {/**/}
-        <br />
-      </View>
-      <View style={styles.edit}>
-        <Text style={{ padding: 10, width: 100 }}>Bio</Text>
-        {/**/}
-        <br />
-      </View>
-      <Button title="Edit >" />
+
+      {/* INFORMATION :: each leads to a redirect to edit that section info */}
+      <TouchableOpacity style={{backgroundColor: '#fff', padding:50, width: '30%', borderRadius: 5, flexDirection: 'row', justifyContent:'space-between'}}>
+        <Text>Name</Text>      {/* Display name that is edited */}
+        <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
+      </TouchableOpacity>
+
+
       <StatusBar style="auto" />
     </View>
   );
@@ -53,7 +41,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
