@@ -6,6 +6,7 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -16,14 +17,16 @@ import { withSafeAreaInsets } from "react-native-safe-area-context";
 const Stack = createStackNavigator();
 
 const UserContext = React.createContext({
-  user: 'Enter User Name'
+  user: 'Enter Your Name'
 });
 
 /// HOME
 function Home({ navigation }) {
-  const [user, setUser] = useState("");
+  const { user, setUser } = useContext(UserContext);
+  const { email, setEmail } = useContext(UserContext);
+  const { phone, setPhone } = useContext(UserContext);
+  const { bio, setBio } = useContext(UserContext);
 
-  const user2 = useContext(UserContext);
 
   return (
     <View style={styles.container}>
@@ -34,10 +37,10 @@ function Home({ navigation }) {
       {/* Add ability to click small icon to upload own picture */}
       <MaterialIcons name="add-a-photo" size={15} style={styles.addPhoto} />
       <br />
-     
+      
       {/* INFORMATION :: each leads to a redirect to edit that section info */}
-      {/* JOIN FIRST & LAST NAME FOR OUTPUT */}
-      {/*  */}
+      {/* USER NAME */}
+      <Text style={styles.smallInfo}>Name</Text>
       <TouchableOpacity
         style={{
           backgroundColor: "#fff",
@@ -48,12 +51,76 @@ function Home({ navigation }) {
           justifyContent: "space-between",
         }}
       >
-        <Text>{user2.user}</Text>
+    
+        <Text style={styles.info}>{user}</Text>
         {/* Display name that is edited */}
         <MaterialIcons
           name="arrow-forward-ios"
           size={20}
           color="black"
+          onPress={() => navigation.navigate("Edit")}
+        />
+      </TouchableOpacity>
+      <Text style={styles.smallInfo}>Email</Text>
+      {/* EMAIL */} 
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#fff",
+          padding: 30,
+          width: "30%",
+          borderRadius: 5,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.info}>{email}</Text>
+        <MaterialIcons
+          name="arrow-forward-ios"
+          size={20}
+          color="black"
+          onPress={() => navigation.navigate("Edit")}
+        />
+      </TouchableOpacity>
+
+      <Text style={styles.smallInfo}>Phone</Text>
+      {/* PHONE */} 
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#fff",
+          padding: 30,
+          width: "30%",
+          borderRadius: 5,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.info}>{phone}</Text>
+        <MaterialIcons
+          name="arrow-forward-ios"
+          size={20}
+          color="black"
+          onPress={() => navigation.navigate("Edit")}
+        />
+      </TouchableOpacity>
+      
+      <Text style={styles.smallInfo}>About You</Text>
+      {/* BIO */} 
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#fff",
+          padding: 30,
+          width: "30%",
+          borderRadius: 5,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.info}>{bio}</Text>
+        <MaterialIcons
+          name="arrow-forward-ios"
+          size={20}
+          color="black"
+          maxLength = {250}
           onPress={() => navigation.navigate("Edit")}
         />
       </TouchableOpacity>
@@ -66,21 +133,43 @@ function Home({ navigation }) {
 /// EDIT
 function Edit({ navigation }) {
 
-  const {user, setUser} = useState('default');
+  const { user, setUser } = useContext(UserContext);
+  const { email, setEmail } = useContext(UserContext);
+  const { phone, setPhone } = useContext(UserContext);
+  const { bio, setBio } = useContext(UserContext);
 
-  const user2 = useContext(UserContext);
- 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Edit</Text>
       <br />
-      <Text>{user2.user}</Text>
-      {/* 2 TEXT INPUTS
-          1 FOR FNAME, 1 FOR LNAME */}
+      {/* NAME */}
       <TextInput
         placeholder="Name"
         style={styles.edit}
-        onChangeText={(text) => this.setUser(text)}
+        onChangeText={(text) => setUser(text)}
+      ></TextInput>
+     <br />
+     {/* EMAIL */}
+     <TextInput
+        placeholder="Email"
+        style={styles.edit}
+        onChangeText={(text) => setEmail(text)}
+      ></TextInput>
+     <br />
+     {/* PHONE */}
+     <TextInput
+        placeholder="Phone"
+        style={styles.edit}
+        onChangeText={(text) => setPhone(text)}
+      ></TextInput>
+     <br />
+     {/* BIO */}
+     <TextInput
+        placeholder="Bio"
+        style={styles.edit}
+        maxLength={50}
+        onChangeText={(text) => setBio(text)}
       ></TextInput>
      <br />
       <View style={styles.edit}>
@@ -106,16 +195,16 @@ function Edit({ navigation }) {
 
 /// MAIN APP
 export default function App() {
-  //So we can update user from subcomponents.
-  this.setUser = (userIn) => {
-    this.setState( state => {
-      user: userIn
-    });
-  };
+
+  const [user, setUser] = useState('Enter Name');
+  const [email, setEmail] = useState('Enter Email');
+  const [phone, setPhone] = useState('Enter Phone');
+  const [bio, setBio] = useState('Enter Bio');
+
 
   return (
     <NavigationContainer>
-      <UserContext.Provider value={this.state.user}>
+      <UserContext.Provider value={{user, setUser, email, setEmail, phone, setPhone, bio, setBio}}>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Edit" component={Edit} />
@@ -155,7 +244,6 @@ const styles = StyleSheet.create({
   },
 
   addPhoto: {
-    position: "absolute",
     justifyContent: "center",
     zIndex: 1,
     alignItems: "center",
@@ -167,4 +255,14 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     marginTop: -20,
   },
+
+  info: {
+    fontSize: 12,
+    wordWrap: 'break-word',
+  },
+  smallInfo: {
+  fontSize: 10,
+  paddingRight: 90,
+  color: 'lightgrey'   
+  }
 });
