@@ -10,48 +10,46 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 const Stack = createStackNavigator();
 
+const UserContext = React.createContext({
+  user: 'Enter User Name'
+});
+
 /// HOME
 function Home({ navigation }) {
-  const [text, setText] = useState("");
-  const [info, setInfo] = useState([]);
+  const [user, setUser] = useState("");
 
-  const inputHandler = (text) => {
-    setText(text);
-  };
-
-  const addInfo = () => {
-    setInfo((currentInfo) => [...info, text]);
-  };
+  const user2 = useContext(UserContext);
 
   return (
     <View style={styles.container}>
+      
       {/* PROFILE IMAGE 
       <MaterialIcons name="account-circle" size={100} />*/}
       <Image source={require("./assets/avatar.png")} style={styles.profile} />
       {/* Add ability to click small icon to upload own picture */}
       <MaterialIcons name="add-a-photo" size={15} style={styles.addPhoto} />
       <br />
-      
-
+     
       {/* INFORMATION :: each leads to a redirect to edit that section info */}
       {/* JOIN FIRST & LAST NAME FOR OUTPUT */}
       {/*  */}
       <TouchableOpacity
         style={{
           backgroundColor: "#fff",
-          padding: 50,
+          padding: 30,
           width: "30%",
           borderRadius: 5,
           flexDirection: "row",
           justifyContent: "space-between",
         }}
       >
-        <Text>{text}</Text> {/* Display name that is edited */}
+        <Text>{user2.user}</Text>
+        {/* Display name that is edited */}
         <MaterialIcons
           name="arrow-forward-ios"
           size={20}
@@ -60,65 +58,69 @@ function Home({ navigation }) {
         />
       </TouchableOpacity>
       <br />
-
-      {/* LEARNING PASSING STATE */}
-      <TextInput
-        placeholder="Name"
-        onChangeText={inputHandler}
-        value={text}
-      ></TextInput>
-      <Button title="Edit" onPress={addInfo} />
-      <View>
-        {info.map((texts) => (
-          <Text key={texts}>{texts}</Text>
-        ))}
-      </View>
     </View>
   );
 }
 
+//Pass in the function from app here to update state like in example. 
 /// EDIT
 function Edit({ navigation }) {
-  {
-    /* STATE */
-  }
 
-  {
-    /*  */
-  }
+  const {user, setUser} = useState('default');
+
+  const user2 = useContext(UserContext);
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Edit</Text>
       <br />
+      <Text>{user2.user}</Text>
       {/* 2 TEXT INPUTS
           1 FOR FNAME, 1 FOR LNAME */}
-      <TextInput placeholder="First Name" style={styles.edit}></TextInput>
       <TextInput
-        placeholder="Last Name"
+        placeholder="Name"
         style={styles.edit}
+        onChangeText={(text) => this.setUser(text)}
       ></TextInput>
-      <br />
-      {/* ON SAVE BUTTON NEEDS TO GO BACK TO HOME SCREEN & MOVE CHANGED STATE */}
-      {/* JOIN FNAME\LNAME HERE OR ON HOME SCREEN? */}
-      {/* USE ICON TO SAVE OR CANCEL */}
-      <MaterialIcons
+     <br />
+      <View style={styles.edit}>
+        {/* ON SAVE BUTTON NEEDS TO GO BACK TO HOME SCREEN & MOVE CHANGED STATE */}
+        <MaterialIcons 
           name="check"
-          size={20}
-          color="black"
+          size={30}
+          color="green"
+          padding={50}
+          onPress={() => navigation.navigate("Home")}
+          />
+        <MaterialIcons
+          name="clear"
+          size={30}
+          color="red"
+          padding={50}
+          onPress={() => navigation.goBack()}
         />
-      <Button title="Cancel" onPress={() => navigation.navigate('Home')} />
+      </View>
     </View>
   );
 }
 
 /// MAIN APP
 export default function App() {
+  //So we can update user from subcomponents.
+  this.setUser = (userIn) => {
+    this.setState( state => {
+      user: userIn
+    });
+  };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Edit" component={Edit} />
-      </Stack.Navigator>
+      <UserContext.Provider value={this.state.user}>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Edit" component={Edit} />
+        </Stack.Navigator>
+      </UserContext.Provider>
     </NavigationContainer>
   );
 }
@@ -146,15 +148,17 @@ const styles = StyleSheet.create({
   edit: {
     justifyContent: "space-between",
     flexDirection: "row",
-    padding: 20,
+    alignItems: "center",
     border: 5,
-    borderColor: "red",
+    borderColor: 'black',
+    padding: 5
   },
 
   addPhoto: {
+    position: "absolute",
     justifyContent: "center",
+    zIndex: 1,
     alignItems: "center",
-    paddingLeft: 50,
   },
 
   title: {
